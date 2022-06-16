@@ -29,7 +29,6 @@ def initPosition():
     pca9685.move_servo_position(5, 80) #middle leg
     pca9685.move_servo_position(4, 85) #bottom leg
 
-
 L1 = 50
 L2 = 56
 def servo_FR(x, z):

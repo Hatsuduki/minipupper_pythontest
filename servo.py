@@ -46,6 +46,13 @@ def servo_FR(x, z):
 initPosition()
 
 time.sleep(1)
-for i in -40, -30, -20, -10, 0, 10, 20, 30, 40, 50:
-    servo_FR(i, 75)
-    time.sleep(0.5)
+
+for j in range(-50, 51, 5): #test
+    servo_FR(j, 75)
+    time.sleep(0.1)
+for j in range(-50, 51, 5): #test
+    servo_FR(-j, 75)
+    time.sleep(0.1)
+for j in range(-50, 51, 5): #test
+    servo_FR(j, 75)
+    time.sleep(0.1)

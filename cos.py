@@ -52,11 +52,11 @@ x_min = -50
 z_height = 20
 
 for count in range(3):
-    for x in range(x_min,x_max+1, 5): #test
+    for x in range(x_min,x_max+1, 5): #forward
         z = 75 - (z_height * math.cos((math.pi/2) * (x/50)))
         servo_FR(x, z)
         time.sleep(0.015)
 
-    for x in range(x_max, x_min-1, -5): #test
+    for x in range(x_max, x_min-1, -5): #back
         servo_FR(x, 75)
         time.sleep(0.015)

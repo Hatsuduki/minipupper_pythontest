@@ -81,7 +81,7 @@ x_max = 45
 x_min = -45
 z_height = 20
 
-#walk
+#walking 3-point grounding 
 for i in range(5):
     for x in range(x_min,x_max+1, 5):
         z = 75 - (z_height * math.cos((math.pi/2) * (x/x_max)))

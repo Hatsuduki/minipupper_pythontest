@@ -22,7 +22,7 @@ def initPosition():
     #rear-right
     pca9685.move_servo_position(9, 55) #top roll
     pca9685.move_servo_position(8, 37) #middle leg
-    pca9685.move_servo_position(7, 17) #bottom leg
+    pca9685.move_servo_position(7, 13) #bottom leg
 
     #rear-left
     pca9685.move_servo_position(6, 55) #top roll
@@ -61,7 +61,7 @@ def servo_RR(x, z): #rear right
     the2 = math.acos((ld*ld - L1*L1 - L2*L2)/(2*L1*L2)) - 45*math.pi/180 + the1# -45はL1とL2のなす外側の角 - L1のz軸からの角度の大きさ
 
     pca9685.move_servo_position(8, the1*180/math.pi + 70)#70はL1が垂直になる角度
-    pca9685.move_servo_position(7, the2*180/math.pi + 17)#17はL2のinitPosition角度
+    pca9685.move_servo_position(7, the2*180/math.pi + 6)#6はL2のinitPositionから調整した角度
 
 def servo_RL(x, z): #rear left
     ld = math.sqrt(x*x + z*z)
@@ -77,34 +77,41 @@ initPosition()
 
 time.sleep(1)
 
-x_max = 50
-x_min = -50
+x_max = 45
+x_min = -45
 z_height = 20
 
 #walk
-for x in range(x_min,x_max+1, 5):
-    z = 75 - (z_height * math.cos((math.pi/2) * (x/50)))
-    servo_FR(x, z)
-    #servo_FL(x, z)
-    #servo_RR(x, z)
-    servo_RL(x, z)
-    time.sleep(0.015)
-
 for i in range(5):
-    for x in range(x_min, x_max+1, 5):
-        z = 75 - (z_height * math.cos((math.pi/2) * (x/50)))
-        servo_FR(-x, 75)
-        servo_FL(x, z)
-        servo_RR(x, z)
-        servo_RL(-x, 75)
-        time.sleep(0.015)
-
-    for x in range(x_min, x_max+1, 5):
-        z = 75 - (z_height * math.cos((math.pi/2) * (x/50)))
+    for x in range(x_min,x_max+1, 5):
+        z = 75 - (z_height * math.cos((math.pi/2) * (x/x_max)))
         servo_FR(x, z)
-        servo_FL(-x, 75)
-        servo_RR(-x, 75)
-        servo_RL(x, z)
-        time.sleep(0.015)
+        servo_FL(-x/3, 75)
+        servo_RR(-x/3+30, 75)
+        servo_RL(-x/3-30, 75)
+        time.sleep(0.01)
 
+    for x in range(x_min, x_max+1, 5):
+        z = 75 - (z_height * math.cos((math.pi/2) * (x/x_max)))
+        servo_FR(-x/3+30, 75)#x座標をfor文3回かけて後ろまで戻す
+        servo_FL(-x/3-30, 75)
+        servo_RR(-x/3, 75)
+        servo_RL(x, z)
+        time.sleep(0.01)
+
+    for x in range(x_min, x_max+1, 5):
+        z = 75 - (z_height * math.cos((math.pi/2) * (x/x_max)))
+        servo_FR(-x/3, 75)
+        servo_FL(x, z)
+        servo_RR(-x/3-30, 75)
+        servo_RL(-x/3+30, 75)
+        time.sleep(0.01)
+
+    for x in range(x_min, x_max+1, 5):
+        z = 75 - (z_height * math.cos((math.pi/2) * (x/x_max)))
+        servo_FR(-x/3-30, 75)
+        servo_FL(-x/3+30, 75)
+        servo_RR(x, z)
+        servo_RL(-x/3, 75)
+        time.sleep(0.01)
 

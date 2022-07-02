@@ -81,21 +81,27 @@ x_max = 30
 x_min = -30
 z_height = 20
 
-#walking 3-point grounding 
-for i in range(5):
-    for x in range(x_min,x_max+1, 5):
+#walking 2-point grounding 
+for i in range(10):
+    for x in range(x_min,x_max+1, 10):
         z = 75 - (z_height * math.cos((math.pi/2) * (x/x_max)))
         servo_FR(x, z)
-        servo_FL(-x/2, 80)
-        servo_RR(-x/3+30, 75)
-        servo_RL(x, z)#バランス確保 高さ-5
+        servo_FL(-x, 80)
+        servo_RR(-x, 80)
+        servo_RL(x, z)
         time.sleep(0.01)
 
-    for x in range(x_min, x_max+1, 5):
+    for x in range(x_min, x_max+1, 10):
         z = 75 - (z_height * math.cos((math.pi/2) * (x/x_max)))
-        servo_FR(-x/3+30, 80)#x座標をfor文3回かけて後ろまで戻す バランス確保 高さ+5
+        servo_FR(-x, 75)
         servo_FL(x, z)
         servo_RR(x, z)
-        servo_RL()
+        servo_RL(-x, 75)
         time.sleep(0.01)
+    #補正
+    servo_FR(x_min-2, 75)
+    time.sleep(0.01)
+    servo_FR(x_min-4, 75)
+    time.sleep(0.01)
+    servo_FR(x_min-6, 75)
 

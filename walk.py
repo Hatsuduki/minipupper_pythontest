@@ -80,6 +80,7 @@ time.sleep(1)
 x_max = 30
 x_min = -30
 z_height = 20
+correct_x = (abs(x_max) + abs(x_min))/3
 
 #walking 3-point grounding 
 for i in range(5):
@@ -87,14 +88,14 @@ for i in range(5):
         z = 75 - (z_height * math.cos((math.pi/2) * (x/x_max)))
         servo_FR(x, z)
         servo_FL(-x/3, 80)
-        servo_RR(-x/3+30, 75)
-        servo_RL(-x/3-30, 70)#バランス確保 高さ-5
+        servo_RR(-x/3+correct_x, 75)
+        servo_RL(-x/3-correct_x, 70)#バランス確保 高さ-5
         time.sleep(0.01)
 
     for x in range(x_min, x_max+1, 5):
         z = 75 - (z_height * math.cos((math.pi/2) * (x/x_max)))
-        servo_FR(-x/3+30, 80)#x座標をfor文3回かけて後ろまで戻す バランス確保 高さ+5
-        servo_FL(-x/3-30, 80)
+        servo_FR(-x/3+correct_x, 80)#x座標をfor文3回かけて後ろまで戻す バランス確保 高さ+5
+        servo_FL(-x/3-correct_x, 80)
         servo_RR(-x/3, 75)
         servo_RL(x, z)
         time.sleep(0.01)
@@ -103,14 +104,14 @@ for i in range(5):
         z = 75 - (z_height * math.cos((math.pi/2) * (x/x_max)))
         servo_FR(-x/3, 75)
         servo_FL(x, z)
-        servo_RR(-x/3-30, 70)#バランス確保 高さ-5
-        servo_RL(-x/3+30, 75)
+        servo_RR(-x/3-correct_x, 70)#バランス確保 高さ-5
+        servo_RL(-x/3+correct_x, 75)
         time.sleep(0.01)
 
     for x in range(x_min, x_max+1, 5):
         z = 75 - (z_height * math.cos((math.pi/2) * (x/x_max)))
-        servo_FR(-x/3-30, 75)
-        servo_FL(-x/3+30, 75)#バランス確保 高さ-5
+        servo_FR(-x/3-correct_x, 75)
+        servo_FL(-x/3+correct_x, 75)#バランス確保 高さ-5
         servo_RR(x, z)
         servo_RL(-x/3, 75)
         time.sleep(0.01)

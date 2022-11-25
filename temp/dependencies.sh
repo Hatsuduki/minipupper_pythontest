@@ -1,6 +1,5 @@
 #!/usr/bin/bash
 
-
 pip3 install --upgrade pip
 #sudo apt install python-setuptools python3-setuptools
 

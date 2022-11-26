@@ -133,7 +133,7 @@ while running:
         avg_slope = 0
         pre_slope = 0
         print()
-        plt.savefig('./img/type_1/figure_00_loop.jpg')
+        plt.savefig('./img/figure_00.jpg')
 
     if count >= len(theta):
         count = 0

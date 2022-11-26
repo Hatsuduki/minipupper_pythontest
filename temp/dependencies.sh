@@ -18,7 +18,18 @@ sudo apt install python3-pigpio
 #[Unit]
 #Description=Daemon required to control GPIO pins via pigpio
 #[Service]
-#ExecStart=/usr/local/bin/pigpiod -l
+#ExecStart=/usr/local/bin/pigpiod
+#ExecStop=/bin/systemctl kill pigpiod
+#Type=forking
+#[Install]
+#WantedBy=multi-user.target
+
+#or------------------------------------------------------------
+
+#[Unit]
+#Description=Daemon required to control GPIO pins via pigpio
+#[Service]
+#ExecStart=/usr/bin/pigpiod -l
 #ExecStop=/bin/systemctl kill pigpiod
 #Type=forking
 #[Install]

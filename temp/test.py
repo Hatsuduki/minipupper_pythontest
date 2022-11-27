@@ -5,6 +5,9 @@ import pi_servo_hat
 import qwiic_vl53l1x
 import adafruit_bno055
 import board
+import copy
+import time
+import numpy as np
 
 def pigpio_test():
     pi = pigpio.pi()
@@ -22,7 +25,14 @@ def vl53l1x_test(): #i2c address: 0x29
     print(tof.get_sensor_id())
     pca = pi_servo_hat.PiServoHat(0x40)
     pca.restart()
-    pca.move_servo_position(2, 0)
+
+    pulse = [ i/10 for i in range(0, 460, 25)] #step 2.5°
+    reverse = copy.deepcopy(pulse)
+    reverse.reverse()
+    pulse = pulse + reverse
+    for i in pulse:
+        pca.move_servo_position(2, i)
+        time.sleep(0.3)
 
 def bno055_test(): #i2c address: 0x28
     i2c = board.I2C()
@@ -31,5 +41,5 @@ def bno055_test(): #i2c address: 0x28
 
 #pigpio_test()
 #pca9685_test()
-vl53l1x_test()
+#vl53l1x_test()
 #bno055_test()

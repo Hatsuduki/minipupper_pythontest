@@ -18,12 +18,12 @@ pi = pigpio.pi()
 pca9685 = pi_servo_hat.PiServoHat(0x40)
 pca9685.restart()
 
-pulse = [ i/10 for i in range(9500, 13000, int(1000/90*1.73)*10)] #step 1.73°
+pulse = [ i/10 for i in range(0, 460, 25)] #step 2.5°
 reverse = copy.deepcopy(pulse)
 reverse.reverse()
 pulse = pulse + reverse
 
-theta = [(i/10)*np.pi/180 for i in range(-900, -450+1, 25)]  # -90°~-45° by 5°
+theta = [(i/10)*np.pi/180 for i in range(-900, -450+1, 25)]  # -90°~-45° by 2.5°
 reverse_theta = copy.deepcopy(theta)
 reverse_theta.reverse()
 theta = theta + reverse_theta
@@ -46,7 +46,7 @@ def exit_handler(signal, frame):
     running = False
     time.sleep(0.5)
     ToF.stop_ranging()
-    pi.set_servo_pulsewidth(21, pulse[0])
+    pca9685.move_servo_position(2, pulse[0])
     print()
     sys.exit(0)
 
@@ -73,7 +73,7 @@ time.sleep(0.15)
 while running:
     #start = time.time()
     #pi.set_servo_pulsewidth(21, pulse[count])   #set servo
-    pca9685.move_servo_position(2, 60)
+    pca9685.move_servo_position(2, pulse[count])
 
     try:
         for i in range(10):
@@ -138,7 +138,7 @@ while running:
         avg_slope = 0
         pre_slope = 0
         print()
-        plt.savefig('./img/figure_00.jpg')
+        plt.savefig('./img/figure_00.png')  #<<<<<<<<<=================帰りがおかしい====================================
 
     if count >= len(theta):
         count = 0

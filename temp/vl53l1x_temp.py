@@ -11,8 +11,12 @@ import matplotlib
 matplotlib.use('Agg')
 import numpy as np
 import matplotlib.pyplot as plt
+import pi_servo_hat
 
 pi = pigpio.pi()
+
+pca9685 = pi_servo_hat.PiServoHat(0x40)
+pca9685.restart()
 
 pulse = [ i/10 for i in range(9500, 13000, int(1000/90*1.73)*10)] #step 1.73°
 reverse = copy.deepcopy(pulse)
@@ -68,7 +72,8 @@ time.sleep(0.15)
 
 while running:
     #start = time.time()
-    pi.set_servo_pulsewidth(21, pulse[count])   #set servo
+    #pi.set_servo_pulsewidth(21, pulse[count])   #set servo
+    pca9685.move_servo_position(2, 60)
 
     try:
         for i in range(10):

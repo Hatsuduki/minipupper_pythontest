@@ -80,17 +80,24 @@ def servo_RL(x, z): #rear left
 
 initPosition()
 
-time.sleep(1)
+print("wait 3sec")
+time.sleep(3)
 
 height = 83
 between_legs = 118
+deg_zero_offset = bno.euler[1]
+deg_offset = 2
 while True:
     deg_z = bno.euler[1]
-    print(deg_z)
-    if deg_z != None:
-        theta_z = (math.pi/180)*deg_z
-        servo_FL(-1*(height*math.tan(theta_z)), height-(between_legs/2*theta_z))
-        servo_FR(-1*(height*math.tan(theta_z)), height-(between_legs/2*theta_z))
-        servo_RL(-1*(height*math.tan(theta_z)), height+(between_legs/2*theta_z))
-        servo_RR(-1*(height*math.tan(theta_z)), height+(between_legs/2*theta_z))
-    time.sleep(0.5)
+    #print(deg_z)
+    if deg_z != None and -17<deg_z and deg_z<17:
+        theta_z = (math.pi/180)*(deg_z - deg_zero_offset + deg_offset)
+        front_toe_dist = (height/math.cos(theta_z)) - ((between_legs+30)*math.sin(theta_z))
+        rear_toe_dist = (height/math.cos(theta_z)) + ((between_legs-30)*math.sin(theta_z))
+        servo_FL(0, front_toe_dist*math.cos(theta_z))
+        servo_FR(0, front_toe_dist*math.cos(theta_z))
+        servo_RL(0, rear_toe_dist*math.cos(theta_z))
+        servo_RR(0, rear_toe_dist*math.cos(theta_z))
+        print(height/math.cos(theta_z))
+        print((height/math.cos(theta_z)) - (between_legs/2*math.sin(theta_z)))
+    time.sleep(0.05)

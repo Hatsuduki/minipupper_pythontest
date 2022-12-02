@@ -88,13 +88,16 @@ rear_height = 83
 between_legs = 118
 deg_zero_offset = bno.euler[1]
 deg_offset = 2
-while True: #P制御
+Kp = 0.5
+Kd = 1.1
+while True: #PD制御
     deg_z = bno.euler[1]
     #print(deg_z)
     if deg_z != None and -17<deg_z and deg_z<17:
         theta_z = (math.pi/180)*(deg_z - deg_zero_offset)
-        front_height = front_height - between_legs/2*math.sin(theta_z) 
-        rear_height = rear_height + between_legs/2*math.sin(theta_z) 
+        gyro_z = bno.gyro[1]
+        front_height = front_height - Kp*between_legs/2*math.sin(theta_z) + Kd*gyro_z
+        rear_height = rear_height + Kp*between_legs/2*math.sin(theta_z) - Kd*gyro_z
         servo_FL(0, front_height)
         servo_FR(0, front_height)
         servo_RL(0, rear_height)

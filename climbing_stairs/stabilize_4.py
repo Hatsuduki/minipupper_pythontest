@@ -79,40 +79,46 @@ def servo_RL(x, z): #rear left
     pca9685.move_servo_position(4, -1*the2*180/math.pi + 85)#85はL2のinitPosition角度
 
 
-initPosition()
+def stabilize(sec):
+    initPosition()
+    time.sleep(1.5)
 
-print("wait 3sec")
-time.sleep(3)
-
-FL_height = 83
-FR_height = 83
-RL_height = 83
-RR_height = 83
-between_sidelegs = 118
-between_centerlegs = 86
-deg_zero_offset_z = bno.euler[1]
-deg_zero_offset_x = bno.euler[2]
-Kp = 0.5
-Kd = 1.1
-while True: #PD制御 2 axes
-    deg_z = bno.euler[1]
-    deg_x = bno.euler[2]
-    #print(deg_z)
-    if deg_z != None and -17<deg_z and deg_z<17 and deg_x != None and -17<deg_x and deg_x<17:
-        theta_z = (math.pi/180)*(deg_z - deg_zero_offset_z)
-        theta_x = (math.pi/180)*(deg_x - deg_zero_offset_x)
-        gyro_z = bno.gyro[1]
-        gyro_x = bno.gyro[0]
+    print("start stabilize")
     
-        FL_height = FL_height - Kp*between_sidelegs/2*math.sin(theta_z) + Kd*gyro_z + Kp*between_centerlegs/2*math.sin(theta_x) - Kd*gyro_x
-        FR_height = FR_height - Kp*between_sidelegs/2*math.sin(theta_z) + Kd*gyro_z - Kp*between_centerlegs/2*math.sin(theta_x) + Kd*gyro_x
-        RL_height = RL_height + Kp*between_sidelegs/2*math.sin(theta_z) - Kd*gyro_z + Kp*between_centerlegs/2*math.sin(theta_x) - Kd*gyro_x
-        RR_height = RR_height + Kp*between_sidelegs/2*math.sin(theta_z) - Kd*gyro_z - Kp*between_centerlegs/2*math.sin(theta_x) + Kd*gyro_x
-        print(RL_height)
+    FL_height = 83
+    FR_height = 83
+    RL_height = 83
+    RR_height = 83
+    between_sidelegs = 118
+    between_centerlegs = 86
+    deg_zero_offset_z = bno.euler[1]
+    deg_zero_offset_x = bno.euler[2]
+    Kp = 0.5
+    Kd = 1.1
+    t = 0
+    while t < sec: #PD制御 2 axes
+        start = time.time()
+        deg_z = bno.euler[1]
+        deg_x = bno.euler[2]
+        #print(deg_z)
+        if deg_z != None and -17<deg_z and deg_z<17 and deg_x != None and -17<deg_x and deg_x<17:
+            theta_z = (math.pi/180)*(deg_z - deg_zero_offset_z)
+            theta_x = (math.pi/180)*(deg_x - deg_zero_offset_x)
+            gyro_z = bno.gyro[1]
+            gyro_x = bno.gyro[0]
         
-        servo_FL(0, FL_height)
-        servo_FR(0, FR_height)
-        servo_RL(0, RL_height)
-        servo_RR(0, RR_height)
+            FL_height = FL_height - Kp*between_sidelegs/2*math.sin(theta_z) + Kd*gyro_z + Kp*between_centerlegs/2*math.sin(theta_x) - Kd*gyro_x
+            FR_height = FR_height - Kp*between_sidelegs/2*math.sin(theta_z) + Kd*gyro_z - Kp*between_centerlegs/2*math.sin(theta_x) + Kd*gyro_x
+            RL_height = RL_height + Kp*between_sidelegs/2*math.sin(theta_z) - Kd*gyro_z + Kp*between_centerlegs/2*math.sin(theta_x) - Kd*gyro_x
+            RR_height = RR_height + Kp*between_sidelegs/2*math.sin(theta_z) - Kd*gyro_z - Kp*between_centerlegs/2*math.sin(theta_x) + Kd*gyro_x
+            #print(RL_height)
             
-    time.sleep(0.05)
+            servo_FL(0, FL_height)
+            servo_FR(0, FR_height)
+            servo_RL(0, RL_height)
+            servo_RR(0, RR_height)
+                
+        time.sleep(0.05)
+        end = time.time()
+        t = t +  (end - start)
+        print(t)
